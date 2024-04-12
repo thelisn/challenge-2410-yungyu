@@ -1,6 +1,6 @@
 # challenge-2410-yungyu
 
-> A Vue.js project
+> standalone version
 
 ## Build Setup
 
