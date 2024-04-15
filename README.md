@@ -5,6 +5,10 @@
 ## Build Setup
 
 ``` bash
+# Version that uses cookies
+# If you want axios ..
+# challenge-2410-yungyu-server
+
 # install dependencies
 npm install
 
