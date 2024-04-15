@@ -2,7 +2,7 @@
   <div v-if="isShow">
     <div class="search-wrapper">
       <div v-if="!switchSearchMethod">
-        <input v-model="searchKeyword" @input="searchByKeyword"> 
+        <input v-model="searchKeyword" @input="searchByKeyword">
       </div>
       <div v-else>
         <input type="date" v-model="startDate" @change="searchByDate">
@@ -10,9 +10,9 @@
       </div>
       <button @click="switchSearch">switch</button>
     </div>
-    
+
     <div style="margin-bottom: 50px;" v-for="item in list" :key="item.title">
-      {{ `${item.title} (${item.date}) - ${item.content}`  }}
+      {{ `${item.title} (${item.date}) - ${item.content}` }}
     </div>
   </div>
 </template>
