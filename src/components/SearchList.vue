@@ -1,6 +1,11 @@
 <template>
   <div v-if="isShow">
     <div class="search-wrapper">
+      <p>현재 조회 방식 : {{ dataMethod }}</p>
+      <button @click="switchDataMethod">switch</button>
+    </div>
+    <p style="color: red;">{{ errorMessage }}</p>
+    <div class="search-wrapper">
       <div v-if="!switchSearchMethod">
         <input v-model="searchKeyword" @input="searchByKeyword">
       </div>
@@ -28,6 +33,8 @@ export default {
       searchKeyword: '',
       startDate: null,
       endDate: null,
+      dataMethod: 'cookies',
+      errorMessage: '',
     }
   },
   mounted() {
@@ -37,11 +44,23 @@ export default {
   methods: {
     getAllContents() {
       this.list = []
-      this.$nextTick(() => 
-        this.$cookies.keys().forEach(key => {
-          this.list.push($cookies.get(key))
-        })
-      )
+      this.errorMessage = ''
+      if (this.dataMethod === 'cookies') {
+          this.$nextTick(() => 
+          this.$cookies.keys().forEach(key => {
+            this.list.push($cookies.get(key))
+          })
+        )
+      } else { 
+          this.$http.get('/api/list')
+          .then((res) => {
+            this.list = res.data;
+          })
+          .catch((err) => {
+            console.log(err)
+            this.errorMessage = 'server closed'
+          })
+        }
     },
     switchSearch() {
       this.getAllContents()
@@ -49,6 +68,10 @@ export default {
       this.startDate = null
       this.endDate = null
       this.switchSearchMethod = !this.switchSearchMethod
+    },
+    switchDataMethod() {
+      this.dataMethod = this.dataMethod === 'cookies' ? 'axios' : 'cookies';
+      this.getAllContents()
     },
     searchByKeyword() {
       if(this.searchKeyword === '') return this.getAllContents()
